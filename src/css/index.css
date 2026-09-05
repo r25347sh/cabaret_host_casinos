@@ -1,0 +1,128 @@
+/* index.html (guest dashboard) */
+
+.guest-header {
+  text-align: center;
+  padding: 2.5rem 1.25rem 1.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.guest-header .badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  color: var(--gold);
+  border: 1px solid rgba(255, 215, 0, 0.35);
+  padding: 0.3rem 1rem;
+  border-radius: 999px;
+  margin-bottom: 0.8rem;
+  background: rgba(255, 215, 0, 0.05);
+}
+
+.guest-header h1 {
+  font-size: clamp(1.8rem, 5vw, 2.6rem);
+  background: linear-gradient(135deg, #fff, var(--pink) 50%, var(--cyan));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 0.4rem;
+}
+
+.guest-header .name {
+  font-size: 1.15rem;
+  color: var(--text);
+  font-weight: 500;
+}
+
+.guest-header .id-small {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+  word-break: break-all;
+}
+
+.points-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin: 1.5rem 0 2rem;
+}
+
+.point-card {
+  text-align: center;
+  padding: 1.4rem 1rem;
+}
+
+.point-card .label {
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+
+.point-card .value {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--gold), var(--pink));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.point-card.total {
+  grid-column: 1 / -1;
+  background: linear-gradient(145deg, rgba(255, 45, 149, 0.12), rgba(0, 245, 255, 0.06));
+  border-color: rgba(255, 45, 149, 0.25);
+}
+
+.point-card.total .value {
+  font-size: 2.6rem;
+}
+
+.scan-section {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.scan-section h2 {
+  font-size: 1.3rem;
+  margin-bottom: 0.8rem;
+  color: #fff;
+}
+
+#reader {
+  width: 100%;
+  max-width: 360px;
+  margin: 0 auto 1rem;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+#reader video {
+  border-radius: var(--radius);
+}
+
+.scan-result {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 12px;
+  background: rgba(0, 245, 255, 0.08);
+  border: 1px solid rgba(0, 245, 255, 0.25);
+  color: var(--cyan);
+  font-size: 0.95rem;
+}
+
+.scan-result.error {
+  background: rgba(255, 45, 149, 0.1);
+  border-color: rgba(255, 45, 149, 0.35);
+  color: #ff8fb5;
+}
+
+@media (max-width: 420px) {
+  .points-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
