@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Staff | Cabaret Host Casinos</title>
+  <link rel="stylesheet" href="src/css/style.css" />
+  <link rel="stylesheet" href="src/css/admin.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+  <div class="g5-ambient" id="ambient" aria-hidden="true"></div>
+
+  <div class="admin-wrap">
+    <!-- Login -->
+    <section id="login-section">
+      <div class="card login-card">
+        <h2>Staff Login</h2>
+        <form id="login-form">
+          <div class="form-group">
+            <label for="login-id">ID</label>
+            <input type="text" id="login-id" autocomplete="username" required />
+          </div>
+          <div class="form-group">
+            <label for="login-pass">Password</label>
+            <input type="password" id="login-pass" autocomplete="current-password" required />
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center">ログイン</button>
+          <p class="form-msg" id="login-msg"></p>
+        </form>
+      </div>
+    </section>
+
+    <!-- Admin Panel -->
+    <section id="admin-panel" class="hidden">
+      <div class="admin-header">
+        <h1>Staff Panel</h1>
+        <div>
+          <span class="admin-user-label" id="admin-user-label"></span>
+          <button type="button" class="btn btn-ghost" id="btn-logout" style="margin-left:0.5rem;padding:0.4rem 0.9rem;font-size:0.8rem">ログアウト</button>
+        </div>
+      </div>
+
+      <div class="card panel-card">
+        <h2>ポイントQR生成</h2>
+        <div class="form-group">
+          <label for="game-type">ゲーム種類</label>
+          <select id="game-type">
+            <option value="1">ブラックジャック (Point1)</option>
+            <option value="2">ポーカー (Point2)</option>
+            <option value="3">チンチロ (Point3)</option>
+            <option value="4">大富豪 (Point4)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="point-value">付与ポイント</label>
+          <input type="number" id="point-value" min="1" max="9999" value="10" />
+        </div>
+        <button type="button" class="btn btn-primary" id="btn-gen-qr" style="width:100%;justify-content:center">QRを生成</button>
+
+        <div class="qr-preview">
+          <div class="qr-frame">
+            <div id="qrcode"></div>
+          </div>
+          <div class="qr-meta" id="qr-meta">ゲームとポイントを選んで生成してください</div>
+        </div>
+      </div>
+
+      <div class="card panel-card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.8rem">
+          <h2 style="margin:0">ゲスト一覧</h2>
+          <button type="button" class="btn btn-ghost" id="btn-refresh-guests" style="padding:0.4rem 0.9rem;font-size:0.8rem">更新</button>
+        </div>
+        <div class="guest-list" id="guest-list"></div>
+      </div>
+    </section>
+  </div>
+
+  <footer class="site-footer">
+    <strong>Cabaret Host Casinos</strong><br />
+    © 2026 Reitaku H.S. 5G
+  </footer>
+
+  <script src="src/js/supabase.js"></script>
+  <script src="src/js/main.js"></script>
+  <script src="src/js/admin/login.js"></script>
+  <script src="src/js/admin/admin.js"></script>
+</body>
+</html>

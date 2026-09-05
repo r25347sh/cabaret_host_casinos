@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>マイポイント | Cabaret Host Casinos</title>
+  <link rel="stylesheet" href="src/css/style.css" />
+  <link rel="stylesheet" href="src/css/index.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+</head>
+<body>
+  <div class="g5-ambient" id="ambient" aria-hidden="true"></div>
+
+  <header class="guest-header">
+    <span class="badge">Cabaret Host Casinos</span>
+    <h1>My Points</h1>
+    <p class="name" id="guest-name">—</p>
+    <p class="id-small" id="guest-id"></p>
+  </header>
+
+  <main class="container">
+    <div class="points-grid">
+      <div class="card point-card">
+        <div class="label">Blackjack</div>
+        <div class="value" id="point1">0</div>
+      </div>
+      <div class="card point-card">
+        <div class="label">Poker</div>
+        <div class="value" id="point2">0</div>
+      </div>
+      <div class="card point-card">
+        <div class="label">Chinchiro</div>
+        <div class="value" id="point3">0</div>
+      </div>
+      <div class="card point-card">
+        <div class="label">Daifugo</div>
+        <div class="value" id="point4">0</div>
+      </div>
+      <div class="card point-card total">
+        <div class="label">Total</div>
+        <div class="value" id="point-total">0</div>
+      </div>
+    </div>
+
+    <section class="scan-section">
+      <h2>QRスキャンでポイントGET</h2>
+      <div id="reader"></div>
+      <button type="button" class="btn btn-primary" id="btn-start-scan">スキャン開始</button>
+      <button type="button" class="btn btn-ghost hidden" id="btn-stop-scan">停止</button>
+      <div class="scan-result hidden" id="scan-result"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <strong>Cabaret Host Casinos</strong><br />
+    © 2026 Reitaku H.S. 5G
+  </footer>
+
+  <script src="src/js/supabase.js"></script>
+  <script src="src/js/main.js"></script>
+  <script src="src/js/index.js"></script>
+</body>
+</html>
