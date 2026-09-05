@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>登録 | Cabaret Host Casinos</title>
+  <link rel="stylesheet" href="src/css/style.css" />
+  <link rel="stylesheet" href="src/css/regist.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <div class="g5-ambient" id="ambient" aria-hidden="true"></div>
+
+  <div class="regist-hero">
+    <span class="badge">Cabaret Host Casinos</span>
+    <h1>Welcome</h1>
+    <p class="sub">ニックネームを決めて、カジノの世界へ</p>
+
+    <div class="card regist-card">
+      <form id="regist-form">
+        <div class="form-group">
+          <label for="nickname">ニックネーム</label>
+          <input type="text" id="nickname" name="nickname" maxlength="20" placeholder="例）星の王子" required autocomplete="off" />
+        </div>
+        <p class="id-preview" id="id-preview"></p>
+        <button type="submit" class="btn btn-primary" id="btn-regist">登録して入場</button>
+        <p class="form-msg" id="regist-msg"></p>
+      </form>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <strong>Cabaret Host Casinos</strong><br />
+    © 2026 Reitaku H.S. 5G
+  </footer>
+
+  <script src="src/js/supabase.js"></script>
+  <script src="src/js/main.js"></script>
+  <script src="src/js/regist.js"></script>
+</body>
+</html>
