@@ -1,0 +1,62 @@
+/* regist.html specific */
+
+.regist-hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem 1.25rem;
+  position: relative;
+  z-index: 1;
+}
+
+.regist-hero .badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid rgba(255, 215, 0, 0.38);
+  padding: 0.35rem 1.1rem;
+  border-radius: 999px;
+  margin-bottom: 1.2rem;
+  background: rgba(255, 215, 0, 0.06);
+}
+
+.regist-hero h1 {
+  font-size: clamp(2.2rem, 6vw, 3.6rem);
+  background: linear-gradient(135deg, #fff 0%, var(--pink) 40%, var(--cyan) 70%, var(--gold) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 0.6rem;
+}
+
+.regist-hero .sub {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  margin-bottom: 2rem;
+  max-width: 420px;
+}
+
+.regist-card {
+  width: 100%;
+  max-width: 400px;
+  text-align: left;
+}
+
+.regist-card .btn {
+  width: 100%;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+.id-preview {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  word-break: break-all;
+  margin-top: 0.5rem;
+  opacity: 0.7;
+}
