@@ -42,129 +42,169 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2.25rem;
-  padding-top: 1rem;
+  gap: 2rem;
+  padding-top: 0.5rem;
   padding-bottom: 3rem;
 }
 
 /* Stage */
 .roulette-stage {
   position: relative;
-  width: min(320px, 82vw);
+  width: min(300px, 78vw);
   aspect-ratio: 1;
   display: grid;
   place-items: center;
 }
 
-/* Pointer (top) */
+/* Pointer — points down into the wheel */
 .roulette-pointer {
   position: absolute;
-  top: -6px;
+  top: -4px;
   left: 50%;
   transform: translateX(-50%);
   width: 0;
   height: 0;
-  border-left: 14px solid transparent;
-  border-right: 14px solid transparent;
-  border-top: 28px solid var(--gold);
-  filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.65));
-  z-index: 5;
+  border-left: 13px solid transparent;
+  border-right: 13px solid transparent;
+  border-top: 26px solid var(--gold);
+  filter: drop-shadow(0 2px 8px rgba(255, 215, 0, 0.7));
+  z-index: 6;
+  transition: transform 0.15s ease;
 }
 
 .roulette-pointer::after {
   content: "";
   position: absolute;
-  top: -28px;
+  top: -26px;
   left: 50%;
   transform: translateX(-50%);
   width: 0;
   height: 0;
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  border-top: 16px solid #fff8dc;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 14px solid #fff8dc;
 }
 
-/* Wheel */
+.roulette-stage.landing .roulette-pointer {
+  animation: pointer-bounce 0.45s var(--ease-spring);
+}
+
+@keyframes pointer-bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  30% { transform: translateX(-50%) translateY(6px); }
+  60% { transform: translateX(-50%) translateY(-2px); }
+}
+
+/* Wheel
+   conic-gradient from -45deg so each 90° slice is centered on 0/90/180/270
+   1 = pink (top), 2 = dark (right), 3 = cyan (bottom), 4 = purple (left)
+*/
 .roulette-wheel {
   width: 100%;
   height: 100%;
   border-radius: 50%;
   position: relative;
   overflow: hidden;
+  background: conic-gradient(
+    from -45deg,
+    #ff2d95 0deg 90deg,
+    #1a1228 90deg 180deg,
+    #00d4e0 180deg 270deg,
+    #8b4fd9 270deg 360deg
+  );
   box-shadow:
-    0 0 0 6px rgba(255, 215, 0, 0.35),
-    0 0 0 12px rgba(16, 11, 26, 0.9),
-    0 0 40px rgba(255, 45, 149, 0.25),
-    inset 0 0 30px rgba(0, 0, 0, 0.45);
-  transition: transform 4.2s cubic-bezier(0.15, 0.85, 0.25, 1);
+    0 0 0 5px rgba(255, 215, 0, 0.4),
+    0 0 0 11px rgba(12, 8, 20, 0.95),
+    0 0 36px rgba(255, 45, 149, 0.28),
+    inset 0 0 28px rgba(0, 0, 0, 0.5);
+  transition: transform 4.4s cubic-bezier(0.12, 0.75, 0.18, 1);
   will-change: transform;
 }
 
 .roulette-wheel.spinning {
   pointer-events: none;
+  box-shadow:
+    0 0 0 5px rgba(255, 215, 0, 0.55),
+    0 0 0 11px rgba(12, 8, 20, 0.95),
+    0 0 48px rgba(255, 45, 149, 0.45),
+    0 0 80px rgba(0, 245, 255, 0.2),
+    inset 0 0 28px rgba(0, 0, 0, 0.5);
 }
 
-/* 4 equal segments (90deg each) via conic-gradient base + absolute labels */
-.roulette-wheel {
-  background: conic-gradient(
-    from -45deg,
-    #ff2d95 0deg 90deg,
-    #1a0f2e 90deg 180deg,
-    #00f5ff 180deg 270deg,
-    #9b5de5 270deg 360deg
-  );
-}
-
-.segment {
+/* Labels — centered in each slice via polar placement */
+.seg-label {
   position: absolute;
-  width: 50%;
-  height: 50%;
+  top: 50%;
+  left: 50%;
+  width: 2.2rem;
+  height: 2.2rem;
+  margin: -1.1rem 0 0 -1.1rem;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
-  padding-top: 12%;
-  transform-origin: 100% 100%;
-  pointer-events: none;
-}
-
-.segment span {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(1.6rem, 6vw, 2.2rem);
+  font-size: clamp(1.5rem, 5.5vw, 2rem);
   color: #fff;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.55);
-  letter-spacing: 0.04em;
-  transform: rotate(45deg);
-}
-
-/* Segment positions (center of each 90deg slice) */
-.seg-1 {
-  /* pink: -45deg ~ 45deg → center 0deg → top-rightish after rotation adjust */
-  transform: rotate(-45deg);
-}
-.seg-2 {
-  transform: rotate(45deg);
-}
-.seg-3 {
-  transform: rotate(135deg);
-}
-.seg-4 {
-  transform: rotate(225deg);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.65);
+  pointer-events: none;
+  z-index: 2;
+  /* --angle set in JS; radius ~32% of wheel */
+  transform: rotate(var(--angle)) translateY(-32%) rotate(calc(-1 * var(--angle)));
 }
 
 .roulette-center {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 22%;
-  height: 22%;
+  width: 20%;
+  height: 20%;
   transform: translate(-50%, -50%);
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #fff8e0, var(--gold) 45%, #b8860b);
+  background: radial-gradient(circle at 32% 28%, #fff8e0, var(--gold) 48%, #a67c00);
   box-shadow:
-    0 0 0 4px rgba(16, 11, 26, 0.85),
-    0 0 18px rgba(255, 215, 0, 0.5);
+    0 0 0 3px rgba(12, 8, 20, 0.9),
+    0 0 16px rgba(255, 215, 0, 0.55);
   z-index: 3;
+  transition: transform 0.3s var(--ease-spring), box-shadow 0.3s ease;
+}
+
+.roulette-stage.landing .roulette-center {
+  transform: translate(-50%, -50%) scale(1.12);
+  box-shadow:
+    0 0 0 3px rgba(12, 8, 20, 0.9),
+    0 0 28px rgba(255, 215, 0, 0.85);
+}
+
+/* Spin glow ring */
+.spin-glow {
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  background: transparent;
+  box-shadow: 0 0 0 2px transparent;
+  transition: opacity 0.3s ease;
+  z-index: 0;
+}
+
+.spin-glow.active {
+  opacity: 1;
+  animation: glow-pulse 1.1s ease-in-out infinite;
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow:
+      0 0 20px 4px rgba(255, 45, 149, 0.35),
+      0 0 40px 8px rgba(0, 245, 255, 0.15);
+  }
+  50% {
+    box-shadow:
+      0 0 32px 8px rgba(255, 45, 149, 0.55),
+      0 0 60px 14px rgba(0, 245, 255, 0.28);
+  }
 }
 
 /* Controls */
@@ -177,47 +217,109 @@
 .roulette-controls .btn {
   width: 100%;
   font-family: var(--font-display);
-  font-size: 1.15rem;
-  letter-spacing: 0.2em;
-  padding: 1.05rem 2rem;
+  font-size: 1.2rem;
+  letter-spacing: 0.22em;
+  padding: 1.1rem 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.roulette-controls .btn:not(:disabled):hover {
+  transform: translateY(-3px) scale(1.02);
+}
+
+.roulette-controls .btn:disabled {
+  opacity: 0.55;
+}
+
+.btn-text {
+  position: relative;
+  z-index: 1;
 }
 
 .result-label {
-  margin-top: 1.5rem;
-  font-size: 0.85rem;
+  margin-top: 1.4rem;
+  font-size: 0.88rem;
   color: var(--text-muted);
   letter-spacing: 0.04em;
+  min-height: 1.4em;
 }
 
 .result-value {
-  margin-top: 0.35rem;
+  margin-top: 0.2rem;
   font-family: var(--font-display);
-  font-size: clamp(2.2rem, 8vw, 3rem);
+  font-size: clamp(2.4rem, 9vw, 3.2rem);
   font-weight: 700;
-  min-height: 1.2em;
-  background: linear-gradient(135deg, var(--gold), #fff, var(--cyan));
+  min-height: 1.15em;
+  line-height: 1.15;
+  background: linear-gradient(135deg, var(--gold), #fff 45%, var(--cyan));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  text-shadow: none;
-  transition: opacity 0.3s ease, transform 0.3s var(--ease-spring);
 }
 
 .result-value.pop {
-  animation: result-pop 0.55s var(--ease-spring);
+  animation: result-pop 0.6s var(--ease-spring);
 }
 
 @keyframes result-pop {
   0% {
-    transform: scale(0.6);
+    transform: scale(0.4) rotate(-8deg);
     opacity: 0;
   }
-  60% {
-    transform: scale(1.12);
+  55% {
+    transform: scale(1.18) rotate(3deg);
   }
   100% {
-    transform: scale(1);
+    transform: scale(1) rotate(0);
     opacity: 1;
+  }
+}
+
+.result-flavor {
+  margin-top: 0.45rem;
+  font-size: 0.92rem;
+  color: var(--pink);
+  letter-spacing: 0.03em;
+  min-height: 1.4em;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.35s ease, transform 0.35s var(--ease-spring);
+}
+
+.result-flavor.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Confetti */
+.confetti-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 20;
+  overflow: hidden;
+}
+
+.confetti-piece {
+  position: absolute;
+  top: -12px;
+  width: 8px;
+  height: 10px;
+  border-radius: 2px;
+  opacity: 0.95;
+  animation: confetti-fall linear forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(var(--dx), 105vh, 0) rotate(var(--rot));
+    opacity: 0;
   }
 }
 
@@ -225,7 +327,12 @@
   .roulette-wheel {
     transition-duration: 0.01ms !important;
   }
-  .result-value.pop {
-    animation: none;
+  .result-value.pop,
+  .roulette-stage.landing .roulette-pointer,
+  .spin-glow.active {
+    animation: none !important;
+  }
+  .confetti-piece {
+    display: none;
   }
 }

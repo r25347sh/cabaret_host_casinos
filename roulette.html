@@ -9,29 +9,35 @@
 </head>
 <body>
   <div class="g5-ambient" id="ambient" aria-hidden="true"></div>
+  <div class="confetti-layer" id="confetti" aria-hidden="true"></div>
 
   <header class="guest-header">
     <span class="badge">Cabaret Host Casinos</span>
     <h1>Roulette</h1>
-    <p class="name">Spin &amp; Win</p>
+    <p class="name">運を試せ — Spin &amp; Win</p>
   </header>
 
   <main class="container roulette-main">
-    <div class="roulette-stage">
+    <div class="roulette-stage" id="stage">
       <div class="roulette-pointer" aria-hidden="true"></div>
       <div class="roulette-wheel" id="wheel" role="img" aria-label="ルーレット">
-        <div class="segment seg-1"><span>1</span></div>
-        <div class="segment seg-2"><span>2</span></div>
-        <div class="segment seg-3"><span>3</span></div>
-        <div class="segment seg-4"><span>4</span></div>
-        <div class="roulette-center"></div>
+        <!-- labels placed by JS for accurate centering -->
+        <div class="seg-label" data-i="0">1</div>
+        <div class="seg-label" data-i="1">2</div>
+        <div class="seg-label" data-i="2">3</div>
+        <div class="seg-label" data-i="3">4</div>
+        <div class="roulette-center" id="hub"></div>
       </div>
+      <div class="spin-glow" id="spin-glow" aria-hidden="true"></div>
     </div>
 
     <div class="roulette-controls">
-      <button type="button" class="btn btn-primary" id="btn-spin">SPIN</button>
-      <p class="result-label" id="result-label">結果がここに表示されます</p>
+      <button type="button" class="btn btn-primary" id="btn-spin">
+        <span class="btn-text">SPIN</span>
+      </button>
+      <p class="result-label" id="result-label">ボタンを押して回せ！</p>
       <p class="result-value" id="result-value" aria-live="polite"></p>
+      <p class="result-flavor" id="result-flavor"></p>
     </div>
   </main>
 
