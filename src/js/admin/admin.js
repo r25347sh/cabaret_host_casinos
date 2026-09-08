@@ -24,7 +24,6 @@
     1: "ブラックジャック",
     2: "ポーカー",
     3: "チンチロ",
-    4: "大富豪",
   };
 
   function showLoginMsg(text, isErr) {
@@ -55,7 +54,7 @@
   function generateQR() {
     const game = Number(gameSelect.value);
     const value = Number(pointInput.value);
-    if (!game || game < 1 || game > 4) {
+    if (!game || game < 1 || game > 3) {
       alert("ゲームを選択してください");
       return;
     }
@@ -122,8 +121,7 @@
           const t =
             Number(g.point1 || 0) +
             Number(g.point2 || 0) +
-            Number(g.point3 || 0) +
-            Number(g.point4 || 0);
+            Number(g.point3 || 0);
           return (
             '<div class="guest-row"><span>' +
             (g.name || "—") +
@@ -138,8 +136,6 @@
             (g.point2 || 0) +
             "/" +
             (g.point3 || 0) +
-            "/" +
-            (g.point4 || 0) +
             "]</small></span></div>"
           );
         })
