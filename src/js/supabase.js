@@ -197,6 +197,20 @@
     return Array.isArray(data) ? data[0] : data;
   }
 
+  async function findGuestsByName(name) {
+    const q =
+      "guests?name=eq." +
+      encodeURIComponent(name) +
+      "&select=*&order=name.asc";
+    const data = await rest("GET", q);
+    return Array.isArray(data) ? data : data ? [data] : [];
+  }
+
+  async function listGuests() {
+    const data = await rest("GET", "guests?select=*&order=name.asc");
+    return Array.isArray(data) ? data : [];
+  }
+
   global.CabaretSB = {
     getClient,
     generateId,
@@ -204,6 +218,8 @@
     getGuest,
     upsertGuest,
     addPoints,
+    findGuestsByName,
+    listGuests,
     formatError,
     SUPABASE_URL,
     SUPABASE_ANON_KEY,
