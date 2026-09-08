@@ -1,5 +1,5 @@
 /**
- * index.html - ゲストダッシュボード + マイQR表示
+ * index.html - ゲストダッシュボード + マイQR + ログアウト
  */
 (function () {
   "use strict";
@@ -12,6 +12,7 @@
   const totalEl = document.getElementById("point-total");
   const btnRefresh = document.getElementById("btn-refresh-points");
   const refreshMsg = document.getElementById("refresh-msg");
+  const btnLogout = document.getElementById("btn-logout");
 
   let guestId = null;
 
@@ -44,6 +45,12 @@
     }
   }
 
+  function logout() {
+    localStorage.removeItem("cabaret_guest_id");
+    localStorage.removeItem("cabaret_guest_name");
+    location.replace("regist.html");
+  }
+
   async function loadGuest() {
     guestId = localStorage.getItem("cabaret_guest_id");
     const name = localStorage.getItem("cabaret_guest_name");
@@ -57,15 +64,17 @@
 
     try {
       const g = await CabaretSB.getGuest(guestId);
-      if (g) {
-        if (g.name) {
-          localStorage.setItem("cabaret_guest_name", g.name);
-          if (nameEl) nameEl.textContent = g.name;
-        }
-        renderPoints(g);
-      } else {
-        renderPoints({ point1: 0, point2: 0, point3: 0 });
+      if (!g) {
+        localStorage.removeItem("cabaret_guest_id");
+        localStorage.removeItem("cabaret_guest_name");
+        location.replace("regist.html");
+        return;
       }
+      if (g.name) {
+        localStorage.setItem("cabaret_guest_name", g.name);
+        if (nameEl) nameEl.textContent = g.name;
+      }
+      renderPoints(g);
     } catch (e) {
       console.warn(e);
       renderPoints({ point1: 0, point2: 0, point3: 0 });
@@ -77,12 +86,13 @@
     if (refreshMsg) refreshMsg.textContent = "更新中…";
     try {
       const g = await CabaretSB.getGuest(guestId);
-      if (g) {
-        renderPoints(g);
-        if (refreshMsg) refreshMsg.textContent = "最新のポイントを反映しました";
-      } else {
-        if (refreshMsg) refreshMsg.textContent = "データが見つかりません";
+      if (!g) {
+        if (refreshMsg) refreshMsg.textContent = "アカウントが削除されています";
+        setTimeout(logout, 800);
+        return;
       }
+      renderPoints(g);
+      if (refreshMsg) refreshMsg.textContent = "最新のポイントを反映しました";
     } catch (e) {
       if (refreshMsg) refreshMsg.textContent = "更新失敗: " + (e.message || e);
     }
@@ -91,6 +101,7 @@
   document.addEventListener("DOMContentLoaded", () => {
     loadGuest();
     if (btnRefresh) btnRefresh.addEventListener("click", refreshPoints);
+    if (btnLogout) btnLogout.addEventListener("click", logout);
     document.addEventListener("visibilitychange", () => {
       if (document.visibilityState === "visible") refreshPoints();
     });
