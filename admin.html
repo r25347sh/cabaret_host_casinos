@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="src/css/style.css" />
   <link rel="stylesheet" href="src/css/admin.css" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 </head>
 <body>
   <div class="g5-ambient" id="ambient" aria-hidden="true"></div>
@@ -41,26 +41,37 @@
       </div>
 
       <div class="card panel-card">
-        <h2>ポイントQR生成</h2>
-        <div class="form-group">
-          <label for="game-type">ゲーム種類</label>
-          <select id="game-type">
-            <option value="1">ブラックジャック (Point1)</option>
-            <option value="2">ポーカー (Point2)</option>
-            <option value="3">チンチロ (Point3)</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="point-value">付与ポイント</label>
-          <input type="number" id="point-value" min="1" max="9999" value="10" />
-        </div>
-        <button type="button" class="btn btn-primary" id="btn-gen-qr" style="width:100%;justify-content:center">QRを生成</button>
+        <h2>ポイント付与</h2>
+        <p class="panel-hint">ゲストのマイQRを読み取り、点数を自由入力して付与します</p>
 
-        <div class="qr-preview">
-          <div class="qr-frame">
-            <div id="qrcode"></div>
+        <div id="staff-reader" class="staff-reader"></div>
+        <div class="scan-btns">
+          <button type="button" class="btn btn-primary" id="btn-start-scan">ゲストQRをスキャン</button>
+          <button type="button" class="btn btn-ghost hidden" id="btn-stop-scan">停止</button>
+        </div>
+        <p class="form-msg" id="scan-msg"></p>
+
+        <div id="grant-form" class="grant-form hidden">
+          <div class="grant-guest">
+            <span class="grant-label">対象ゲスト</span>
+            <strong id="grant-name">—</strong>
+            <span class="grant-id" id="grant-id"></span>
           </div>
-          <div class="qr-meta" id="qr-meta">ゲームとポイントを選んで生成してください</div>
+          <div class="form-group">
+            <label for="game-type">ゲーム</label>
+            <select id="game-type">
+              <option value="1">ブラックジャック (Point1)</option>
+              <option value="2">ポーカー (Point2)</option>
+              <option value="3">大富豪 (Point3)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="point-value">付与ポイント（自由入力）</label>
+            <input type="number" id="point-value" min="1" max="99999" step="1" placeholder="例: 15" />
+          </div>
+          <button type="button" class="btn btn-primary" id="btn-grant" style="width:100%;justify-content:center">ポイントを付与</button>
+          <button type="button" class="btn btn-ghost" id="btn-clear-guest" style="width:100%;justify-content:center;margin-top:0.5rem">別のゲストを読む</button>
+          <p class="form-msg" id="grant-msg"></p>
         </div>
       </div>
 
