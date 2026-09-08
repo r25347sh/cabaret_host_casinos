@@ -43,9 +43,15 @@
 
 .points-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
   margin: 1.5rem 0 2rem;
+}
+
+@media (max-width: 520px) {
+  .points-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .point-card {
@@ -119,10 +125,4 @@
   background: rgba(255, 45, 149, 0.1);
   border-color: rgba(255, 45, 149, 0.35);
   color: #ff8fb5;
-}
-
-@media (max-width: 420px) {
-  .points-grid {
-    grid-template-columns: 1fr 1fr;
-  }
 }
