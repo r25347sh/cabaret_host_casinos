@@ -63,7 +63,6 @@
         point1: 0,
         point2: 0,
         point3: 0,
-        point4: 0,
       });
       localStorage.setItem("cabaret_guest_id", guestId);
       localStorage.setItem("cabaret_guest_name", name);
