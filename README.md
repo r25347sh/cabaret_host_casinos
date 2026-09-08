@@ -9,31 +9,22 @@
 
 ```
 .
-├── index.html          # 客側ダッシュボード（ポイント表示 + QRスキャン）
-├── admin.html          # スタッフ側（ログイン + ポイントQR生成）
-├── regist.html         # 客側初回登録（ニックネーム）
+├── index.html
+├── admin.html
+├── regist.html
 └── src/
-    ├── css/
-    │   ├── style.css
-    │   ├── regist.css
-    │   ├── index.css
-    │   └── admin.css
-    ├── js/
-    │   ├── main.js
-    │   ├── supabase.js
-    │   ├── regist.js
-    │   ├── index.js
-    │   └── admin/
-    │       ├── login.js
-    │       └── admin.js
-    └── data/
-        └── users.json  # スタッフ認証用
+    ├── css/ (style / regist / index / admin)
+    ├── js/ (main / supabase / regist / index / admin/*)
+    └── data/users.json
 ```
 
-## Supabase セットアップ
+## Supabase セットアップ（必須）
 
-1. プロジェクト: `https://ngjculhtbbxazgkkelvi.supabase.co`
-2. SQL Editor で以下を実行:
+テーブルが無いと `Could not find the table 'public.guests'` になります。
+
+1. [Supabase Dashboard](https://supabase.com/dashboard) → プロジェクト `ngjculhtbbxazgkkelvi`
+2. 左メニュー **SQL Editor** → New query
+3. 以下を貼って **Run**:
 
 ```sql
 create table if not exists public.guests (
@@ -42,11 +33,9 @@ create table if not exists public.guests (
   point1 integer not null default 0,
   point2 integer not null default 0,
   point3 integer not null default 0,
-  point4 integer not null default 0,
   created_at timestamptz default now()
 );
 
--- anon から読み書き可能（イベント用途の簡易設定）
 alter table public.guests enable row level security;
 
 create policy "anon_all" on public.guests
@@ -56,25 +45,11 @@ create policy "anon_all" on public.guests
   with check (true);
 ```
 
-3. 公開キーは `src/js/supabase.js` に記載済み。
+4. Table Editor で `guests` が見えれば OK。
 
 ## 使い方
 
-### 客側
-1. `regist.html` を開く → 自動で一意 ID 生成
-2. ニックネーム入力 → Supabase に保存 → `index.html` へ自動遷移
-3. ポイント表示。スタッフが発行した QR をスキャンしてポイント加算
+- 客: `regist.html` → ニックネーム → `index.html`（QRスキャンでポイント）
+- スタッフ: `admin.html`（5G-staff と同じ ID/PASS）→ QR生成
 
-### スタッフ側
-1. `admin.html` でログイン（5G-staff と同じ ID/PASS）
-2. ゲーム種類 + ポイント数を指定して QR 生成（デコレーション付き）
-3. お客様に読み取ってもらう
-
-## デプロイ
-
-GitHub Pages（`.github/workflows/deploy.yml` あり）
-
-## 注意
-
-- 本番利用時は RLS をより厳格に、または Edge Function 経由に変更推奨
-- カメラ権限が必要なため HTTPS 必須（GitHub Pages は HTTPS）
+ゲーム: Point1=BJ / Point2=Poker / Point3=チンチロ
