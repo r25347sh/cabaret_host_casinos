@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Ranking | Cabaret Host Casinos</title>
+  <link rel="stylesheet" href="src/css/style.css" />
+  <link rel="stylesheet" href="src/css/ranking.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="ranking-body">
+  <div class="g5-ambient" id="ambient" aria-hidden="true"></div>
+
+  <header class="rank-header">
+    <span class="badge">Cabaret Host Casinos</span>
+    <h1>LIVE RANKING</h1>
+    <p class="rank-sub" id="rank-clock">—</p>
+  </header>
+
+  <main class="rank-stage">
+    <div class="cube-scene">
+      <div class="cube" id="rank-cube">
+        <div class="cube-face face-front" data-face="0">
+          <div class="face-title">TOTAL</div>
+          <ol class="rank-list" id="list-total"></ol>
+        </div>
+        <div class="cube-face face-right" data-face="1">
+          <div class="face-title">BLACKJACK</div>
+          <ol class="rank-list" id="list-p1"></ol>
+        </div>
+        <div class="cube-face face-back" data-face="2">
+          <div class="face-title">POKER</div>
+          <ol class="rank-list" id="list-p2"></ol>
+        </div>
+        <div class="cube-face face-left" data-face="3">
+          <div class="face-title">DAIFUGO</div>
+          <ol class="rank-list" id="list-p3"></ol>
+        </div>
+      </div>
+    </div>
+
+    <div class="face-dots" id="face-dots" aria-hidden="true">
+      <span class="dot active" data-i="0"></span>
+      <span class="dot" data-i="1"></span>
+      <span class="dot" data-i="2"></span>
+      <span class="dot" data-i="3"></span>
+    </div>
+    <p class="face-caption" id="face-caption">総合ポイント</p>
+  </main>
+
+  <footer class="site-footer">
+    <strong>Cabaret Host Casinos</strong><br />
+    リアルタイム更新 · © 2026 Reitaku H.S. 5G
+  </footer>
+
+  <script src="src/js/supabase.js"></script>
+  <script src="src/js/main.js"></script>
+  <script src="src/js/ranking.js"></script>
+</body>
+</html>

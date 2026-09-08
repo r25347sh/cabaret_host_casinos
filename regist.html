@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>登録 | Cabaret Host Casinos</title>
+  <title>入場 | Cabaret Host Casinos</title>
   <link rel="stylesheet" href="src/css/style.css" />
   <link rel="stylesheet" href="src/css/regist.css" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -14,17 +14,33 @@
   <div class="regist-hero">
     <span class="badge">Cabaret Host Casinos</span>
     <h1>Welcome</h1>
-    <p class="sub">ニックネームを決めて、カジノの世界へ</p>
+    <p class="sub">新規入場 or 再入場を選んでください</p>
 
     <div class="card regist-card">
-      <form id="regist-form">
+      <div class="mode-tabs" role="tablist">
+        <button type="button" class="mode-tab active" data-mode="new" id="tab-new">新規入場</button>
+        <button type="button" class="mode-tab" data-mode="re" id="tab-re">再入場</button>
+      </div>
+
+      <form id="regist-form" class="mode-panel">
         <div class="form-group">
           <label for="nickname">ニックネーム</label>
           <input type="text" id="nickname" name="nickname" maxlength="20" placeholder="例）星の王子" required autocomplete="off" />
         </div>
         <p class="id-preview" id="id-preview"></p>
-        <button type="submit" class="btn btn-primary" id="btn-regist">登録して入場</button>
+        <button type="submit" class="btn btn-primary" id="btn-regist" style="width:100%;justify-content:center">登録して入場</button>
         <p class="form-msg" id="regist-msg"></p>
+      </form>
+
+      <form id="relogin-form" class="mode-panel hidden">
+        <p class="panel-desc">登録済みのニックネームで再入場します。<br>Supabase上にアカウントが残っている場合のみ有効です。</p>
+        <div class="form-group">
+          <label for="re-nickname">ニックネーム</label>
+          <input type="text" id="re-nickname" maxlength="20" placeholder="登録時のニックネーム" required autocomplete="off" />
+        </div>
+        <button type="submit" class="btn btn-primary" id="btn-relogin" style="width:100%;justify-content:center">再入場</button>
+        <p class="form-msg" id="relogin-msg"></p>
+        <div id="relogin-candidates" class="relogin-candidates hidden"></div>
       </form>
     </div>
   </div>
