@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Roulette | Cabaret Host Casinos</title>
+  <link rel="stylesheet" href="src/css/style.css" />
+  <link rel="stylesheet" href="src/css/roulette.css" />
+</head>
+<body>
+  <div class="g5-ambient" id="ambient" aria-hidden="true"></div>
+
+  <header class="guest-header">
+    <span class="badge">Cabaret Host Casinos</span>
+    <h1>Roulette</h1>
+    <p class="name">Spin &amp; Win</p>
+  </header>
+
+  <main class="container roulette-main">
+    <div class="roulette-stage">
+      <div class="roulette-pointer" aria-hidden="true"></div>
+      <div class="roulette-wheel" id="wheel" role="img" aria-label="ルーレット">
+        <div class="segment seg-1"><span>1</span></div>
+        <div class="segment seg-2"><span>2</span></div>
+        <div class="segment seg-3"><span>3</span></div>
+        <div class="segment seg-4"><span>4</span></div>
+        <div class="roulette-center"></div>
+      </div>
+    </div>
+
+    <div class="roulette-controls">
+      <button type="button" class="btn btn-primary" id="btn-spin">SPIN</button>
+      <p class="result-label" id="result-label">結果がここに表示されます</p>
+      <p class="result-value" id="result-value" aria-live="polite"></p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <strong>Cabaret Host Casinos</strong><br />
+    © 2026 Reitaku H.S. 5G
+  </footer>
+
+  <script src="src/js/main.js"></script>
+  <script src="src/js/roulette.js"></script>
+</body>
+</html>

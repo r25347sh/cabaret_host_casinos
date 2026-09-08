@@ -1,0 +1,231 @@
+/* ============================================
+   Roulette - Cabaret Host Casinos
+   ============================================ */
+
+.guest-header {
+  text-align: center;
+  padding: 2.5rem 1.25rem 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+.guest-header .badge {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--pink);
+  border: 1px solid rgba(255, 45, 149, 0.35);
+  padding: 0.28rem 0.9rem;
+  border-radius: 999px;
+  margin-bottom: 0.85rem;
+  background: rgba(255, 45, 149, 0.08);
+}
+
+.guest-header h1 {
+  font-size: clamp(1.8rem, 5vw, 2.4rem);
+  background: linear-gradient(135deg, #fff 20%, var(--pink) 55%, var(--cyan));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 0.35rem;
+}
+
+.guest-header .name {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+}
+
+.roulette-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.25rem;
+  padding-top: 1rem;
+  padding-bottom: 3rem;
+}
+
+/* Stage */
+.roulette-stage {
+  position: relative;
+  width: min(320px, 82vw);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+}
+
+/* Pointer (top) */
+.roulette-pointer {
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 14px solid transparent;
+  border-right: 14px solid transparent;
+  border-top: 28px solid var(--gold);
+  filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.65));
+  z-index: 5;
+}
+
+.roulette-pointer::after {
+  content: "";
+  position: absolute;
+  top: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 16px solid #fff8dc;
+}
+
+/* Wheel */
+.roulette-wheel {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 6px rgba(255, 215, 0, 0.35),
+    0 0 0 12px rgba(16, 11, 26, 0.9),
+    0 0 40px rgba(255, 45, 149, 0.25),
+    inset 0 0 30px rgba(0, 0, 0, 0.45);
+  transition: transform 4.2s cubic-bezier(0.15, 0.85, 0.25, 1);
+  will-change: transform;
+}
+
+.roulette-wheel.spinning {
+  pointer-events: none;
+}
+
+/* 4 equal segments (90deg each) via conic-gradient base + absolute labels */
+.roulette-wheel {
+  background: conic-gradient(
+    from -45deg,
+    #ff2d95 0deg 90deg,
+    #1a0f2e 90deg 180deg,
+    #00f5ff 180deg 270deg,
+    #9b5de5 270deg 360deg
+  );
+}
+
+.segment {
+  position: absolute;
+  width: 50%;
+  height: 50%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 12%;
+  transform-origin: 100% 100%;
+  pointer-events: none;
+}
+
+.segment span {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.6rem, 6vw, 2.2rem);
+  color: #fff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.55);
+  letter-spacing: 0.04em;
+  transform: rotate(45deg);
+}
+
+/* Segment positions (center of each 90deg slice) */
+.seg-1 {
+  /* pink: -45deg ~ 45deg → center 0deg → top-rightish after rotation adjust */
+  transform: rotate(-45deg);
+}
+.seg-2 {
+  transform: rotate(45deg);
+}
+.seg-3 {
+  transform: rotate(135deg);
+}
+.seg-4 {
+  transform: rotate(225deg);
+}
+
+.roulette-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 22%;
+  height: 22%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fff8e0, var(--gold) 45%, #b8860b);
+  box-shadow:
+    0 0 0 4px rgba(16, 11, 26, 0.85),
+    0 0 18px rgba(255, 215, 0, 0.5);
+  z-index: 3;
+}
+
+/* Controls */
+.roulette-controls {
+  text-align: center;
+  width: 100%;
+  max-width: 280px;
+}
+
+.roulette-controls .btn {
+  width: 100%;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  letter-spacing: 0.2em;
+  padding: 1.05rem 2rem;
+}
+
+.result-label {
+  margin-top: 1.5rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+}
+
+.result-value {
+  margin-top: 0.35rem;
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 8vw, 3rem);
+  font-weight: 700;
+  min-height: 1.2em;
+  background: linear-gradient(135deg, var(--gold), #fff, var(--cyan));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: none;
+  transition: opacity 0.3s ease, transform 0.3s var(--ease-spring);
+}
+
+.result-value.pop {
+  animation: result-pop 0.55s var(--ease-spring);
+}
+
+@keyframes result-pop {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.12);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .roulette-wheel {
+    transition-duration: 0.01ms !important;
+  }
+  .result-value.pop {
+    animation: none;
+  }
+}
