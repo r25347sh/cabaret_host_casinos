@@ -9,7 +9,6 @@
   const p1 = document.getElementById("point1");
   const p2 = document.getElementById("point2");
   const p3 = document.getElementById("point3");
-  const p4 = document.getElementById("point4");
   const totalEl = document.getElementById("point-total");
   const scanResult = document.getElementById("scan-result");
   const btnScan = document.getElementById("btn-start-scan");
@@ -30,12 +29,10 @@
     const a = Number(g.point1 || 0);
     const b = Number(g.point2 || 0);
     const c = Number(g.point3 || 0);
-    const d = Number(g.point4 || 0);
     if (p1) p1.textContent = a;
     if (p2) p2.textContent = b;
     if (p3) p3.textContent = c;
-    if (p4) p4.textContent = d;
-    if (totalEl) totalEl.textContent = a + b + c + d;
+    if (totalEl) totalEl.textContent = a + b + c;
   }
 
   async function loadGuest() {
@@ -57,11 +54,11 @@
         }
         renderPoints(g);
       } else {
-        renderPoints({ point1: 0, point2: 0, point3: 0, point4: 0 });
+        renderPoints({ point1: 0, point2: 0, point3: 0 });
       }
     } catch (e) {
       console.warn(e);
-      renderPoints({ point1: 0, point2: 0, point3: 0, point4: 0 });
+      renderPoints({ point1: 0, point2: 0, point3: 0 });
     }
   }
 
@@ -78,7 +75,7 @@
       return;
     }
     const game = Number(payload.g);
-    if (game < 1 || game > 4) {
+    if (game < 1 || game > 3) {
       showResult("ゲーム番号が不正です", true);
       return;
     }
