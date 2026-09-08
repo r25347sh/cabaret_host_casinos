@@ -1,5 +1,5 @@
 /**
- * index.html - ゲストダッシュボード + QRスキャンでポイント加算
+ * index.html - ゲストダッシュボード + マイQR表示
  */
 (function () {
   "use strict";
@@ -10,20 +10,10 @@
   const p2 = document.getElementById("point2");
   const p3 = document.getElementById("point3");
   const totalEl = document.getElementById("point-total");
-  const scanResult = document.getElementById("scan-result");
-  const btnScan = document.getElementById("btn-start-scan");
-  const btnStop = document.getElementById("btn-stop-scan");
+  const btnRefresh = document.getElementById("btn-refresh-points");
+  const refreshMsg = document.getElementById("refresh-msg");
 
   let guestId = null;
-  let html5QrCode = null;
-  let scanning = false;
-
-  function showResult(text, isErr) {
-    if (!scanResult) return;
-    scanResult.textContent = text;
-    scanResult.classList.toggle("error", !!isErr);
-    scanResult.classList.remove("hidden");
-  }
 
   function renderPoints(g) {
     const a = Number(g.point1 || 0);
@@ -35,6 +25,25 @@
     if (totalEl) totalEl.textContent = a + b + c;
   }
 
+  function showMyQr(id) {
+    const el = document.getElementById("my-qrcode");
+    if (!el) return;
+    el.innerHTML = "";
+    const payload = JSON.stringify({ t: "guest", id: id });
+    if (window.QRCode) {
+      new QRCode(el, {
+        text: payload,
+        width: 220,
+        height: 220,
+        colorDark: "#0a0712",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.M,
+      });
+    } else {
+      el.textContent = payload;
+    }
+  }
+
   async function loadGuest() {
     guestId = localStorage.getItem("cabaret_guest_id");
     const name = localStorage.getItem("cabaret_guest_name");
@@ -44,6 +53,7 @@
     }
     if (nameEl) nameEl.textContent = name;
     if (idEl) idEl.textContent = guestId;
+    showMyQr(guestId);
 
     try {
       const g = await CabaretSB.getGuest(guestId);
@@ -62,92 +72,27 @@
     }
   }
 
-  async function handleQr(text) {
-    let payload;
+  async function refreshPoints() {
+    if (!guestId) return;
+    if (refreshMsg) refreshMsg.textContent = "更新中…";
     try {
-      payload = JSON.parse(text);
+      const g = await CabaretSB.getGuest(guestId);
+      if (g) {
+        renderPoints(g);
+        if (refreshMsg) refreshMsg.textContent = "最新のポイントを反映しました";
+      } else {
+        if (refreshMsg) refreshMsg.textContent = "データが見つかりません";
+      }
     } catch (e) {
-      showResult("無効なQRです", true);
-      return;
-    }
-    if (payload.t !== "pt" || !payload.g || payload.v == null) {
-      showResult("ポイントQRではありません", true);
-      return;
-    }
-    const game = Number(payload.g);
-    if (game < 1 || game > 3) {
-      showResult("ゲーム番号が不正です", true);
-      return;
-    }
-    const amount = Number(payload.v);
-    if (!amount || amount <= 0) {
-      showResult("ポイント値が不正です", true);
-      return;
-    }
-
-    const key = "point" + game;
-    showResult("ポイント加算中…");
-
-    try {
-      const updated = await CabaretSB.addPoints(guestId, key, amount);
-      renderPoints(updated || {});
-      const label = payload.n || "ゲーム" + game;
-      showResult("+" + amount + " pt 獲得！（" + label + "）");
-      stopScan();
-    } catch (err) {
-      console.error(err);
-      showResult("加算失敗: " + (err.message || err), true);
-    }
-  }
-
-  async function startScan() {
-    if (scanning) return;
-    if (!window.Html5Qrcode) {
-      showResult("QRライブラリ未読込", true);
-      return;
-    }
-    scanning = true;
-    btnScan.classList.add("hidden");
-    btnStop.classList.remove("hidden");
-    showResult("カメラを起動中…");
-
-    html5QrCode = new Html5Qrcode("reader");
-    try {
-      await html5QrCode.start(
-        { facingMode: "environment" },
-        { fps: 10, qrbox: { width: 220, height: 220 } },
-        async (decoded) => {
-          if (!scanning) return;
-          scanning = false;
-          await handleQr(decoded);
-        },
-        () => {}
-      );
-      showResult("QRを枠内に合わせてください");
-    } catch (err) {
-      showResult("カメラ起動失敗: " + (err.message || err), true);
-      scanning = false;
-      btnScan.classList.remove("hidden");
-      btnStop.classList.add("hidden");
-    }
-  }
-
-  async function stopScan() {
-    scanning = false;
-    btnStop.classList.add("hidden");
-    btnScan.classList.remove("hidden");
-    if (html5QrCode) {
-      try {
-        await html5QrCode.stop();
-        html5QrCode.clear();
-      } catch (e) {}
-      html5QrCode = null;
+      if (refreshMsg) refreshMsg.textContent = "更新失敗: " + (e.message || e);
     }
   }
 
   document.addEventListener("DOMContentLoaded", () => {
     loadGuest();
-    if (btnScan) btnScan.addEventListener("click", startScan);
-    if (btnStop) btnStop.addEventListener("click", stopScan);
+    if (btnRefresh) btnRefresh.addEventListener("click", refreshPoints);
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible") refreshPoints();
+    });
   });
 })();

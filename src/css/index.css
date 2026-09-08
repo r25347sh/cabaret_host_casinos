@@ -87,42 +87,36 @@
   font-size: 2.6rem;
 }
 
-.scan-section {
+.my-qr-section {
   text-align: center;
-  margin-top: 1.5rem;
+  margin-top: 0.5rem;
+  padding-bottom: 1rem;
 }
 
-.scan-section h2 {
-  font-size: 1.3rem;
-  margin-bottom: 0.8rem;
+.my-qr-section h2 {
+  font-size: 1.25rem;
+  margin-bottom: 0.4rem;
   color: #fff;
 }
 
-#reader {
-  width: 100%;
-  max-width: 360px;
-  margin: 0 auto 1rem;
-  border-radius: var(--radius);
-  overflow: hidden;
-  border: 1px solid var(--border);
+.my-qr-hint {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-bottom: 1.1rem;
 }
 
-#reader video {
-  border-radius: var(--radius);
+.my-qr-frame {
+  display: inline-block;
+  padding: 14px;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow:
+    0 0 0 2px rgba(255, 45, 149, 0.35),
+    0 0 28px rgba(255, 45, 149, 0.2);
 }
 
-.scan-result {
-  margin-top: 1rem;
-  padding: 1rem;
-  border-radius: 12px;
-  background: rgba(0, 245, 255, 0.08);
-  border: 1px solid rgba(0, 245, 255, 0.25);
-  color: var(--cyan);
-  font-size: 0.95rem;
-}
-
-.scan-result.error {
-  background: rgba(255, 45, 149, 0.1);
-  border-color: rgba(255, 45, 149, 0.35);
-  color: #ff8fb5;
+#my-qrcode {
+  display: flex;
+  justify-content: center;
+  line-height: 0;
 }

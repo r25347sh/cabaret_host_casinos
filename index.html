@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="src/css/style.css" />
   <link rel="stylesheet" href="src/css/index.css" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
   <div class="g5-ambient" id="ambient" aria-hidden="true"></div>
@@ -30,7 +30,7 @@
         <div class="value" id="point2">0</div>
       </div>
       <div class="card point-card">
-        <div class="label">Chinchiro</div>
+        <div class="label">Daifugo</div>
         <div class="value" id="point3">0</div>
       </div>
       <div class="card point-card total">
@@ -39,12 +39,14 @@
       </div>
     </div>
 
-    <section class="scan-section">
-      <h2>QRスキャンでポイントGET</h2>
-      <div id="reader"></div>
-      <button type="button" class="btn btn-primary" id="btn-start-scan">スキャン開始</button>
-      <button type="button" class="btn btn-ghost hidden" id="btn-stop-scan">停止</button>
-      <div class="scan-result hidden" id="scan-result"></div>
+    <section class="my-qr-section">
+      <h2>マイQR</h2>
+      <p class="my-qr-hint">スタッフにこの画面を見せてください</p>
+      <div class="my-qr-frame">
+        <div id="my-qrcode"></div>
+      </div>
+      <button type="button" class="btn btn-ghost" id="btn-refresh-points" style="margin-top:1rem">ポイントを更新</button>
+      <p class="form-msg" id="refresh-msg"></p>
     </section>
   </main>
 
