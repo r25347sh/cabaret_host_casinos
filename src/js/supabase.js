@@ -6,7 +6,9 @@
   "use strict";
 
   const SUPABASE_URL = "https://ngjculhtbbxazgkkelvi.supabase.co";
-  const SUPABASE_ANON_KEY = "sb_publishable_rYgVHob0s7YTscNujVBtPQ_Sh5GNR9s";
+  // anon public JWT（Dashboard → Project Settings → API）
+  const SUPABASE_ANON_KEY =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5namN1bGh0YmJ4YXpna2tlbHZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg1NjYyMzEsImV4cCI6MjEwNDE0MjIzMX0.2AF7s7-cwgTMGuBl5TN1INhhkTaFJ2z-7Oj8t26iu2k";
 
   let client = null;
 
@@ -120,29 +122,78 @@
     return id;
   }
 
+  function formatError(err) {
+    if (!err) return "不明なエラー";
+    if (typeof err === "string") return err;
+    if (err.message) return err.message;
+    try {
+      return JSON.stringify(err);
+    } catch (e) {
+      return String(err);
+    }
+  }
+
+  /** REST 直接（supabase-js の有無に依存しない） */
+  async function rest(method, path, body) {
+    const headers = {
+      apikey: SUPABASE_ANON_KEY,
+      Authorization: "Bearer " + SUPABASE_ANON_KEY,
+      "Content-Type": "application/json",
+      Prefer: "return=representation",
+    };
+    if (method === "POST" && path.indexOf("on_conflict") !== -1) {
+      headers.Prefer = "resolution=merge-duplicates,return=representation";
+    }
+    const res = await fetch(SUPABASE_URL + "/rest/v1/" + path, {
+      method: method,
+      headers: headers,
+      body: body != null ? JSON.stringify(body) : undefined,
+    });
+    const text = await res.text();
+    let data = null;
+    try {
+      data = text ? JSON.parse(text) : null;
+    } catch (e) {
+      data = text;
+    }
+    if (!res.ok) {
+      const msg =
+        (data && (data.message || data.error || data.hint)) ||
+        text ||
+        res.status + " " + res.statusText;
+      throw new Error(msg);
+    }
+    return data;
+  }
+
   async function getGuest(id) {
-    const sb = getClient();
-    const { data, error } = await sb.from("guests").select("*").eq("id", id).single();
-    if (error) throw error;
+    const data = await rest(
+      "GET",
+      "guests?id=eq." + encodeURIComponent(id) + "&select=*"
+    );
+    if (Array.isArray(data)) return data[0] || null;
     return data;
   }
 
   async function upsertGuest(row) {
-    const sb = getClient();
-    const { data, error } = await sb.from("guests").upsert(row, { onConflict: "id" });
-    if (error) throw error;
+    const data = await rest("POST", "guests?on_conflict=id", row);
     return Array.isArray(data) ? data[0] : data;
   }
 
   async function addPoints(guestId, pointKey, amount) {
     const guest = await getGuest(guestId);
     if (!guest) throw new Error("ゲストが見つかりません");
-    const key = pointKey.toLowerCase();
+    const key = String(pointKey).toLowerCase();
+    if (["point1", "point2", "point3"].indexOf(key) === -1) {
+      throw new Error("不正なポイント種別: " + key);
+    }
     const current = Number(guest[key] || 0);
     const patch = { [key]: current + Number(amount) };
-    const sb = getClient();
-    const { data, error } = await sb.from("guests").eq("id", guestId).update(patch);
-    if (error) throw error;
+    const data = await rest(
+      "PATCH",
+      "guests?id=eq." + encodeURIComponent(guestId),
+      patch
+    );
     return Array.isArray(data) ? data[0] : data;
   }
 
@@ -153,6 +204,7 @@
     getGuest,
     upsertGuest,
     addPoints,
+    formatError,
     SUPABASE_URL,
     SUPABASE_ANON_KEY,
   };
